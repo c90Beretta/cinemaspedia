@@ -1,4 +1,4 @@
-import 'package:cinepedia/config/router/approuter.dart';
+import 'package:cinepedia/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp.router(
       routerConfig: appRouter,
-
+      debugShowCheckedModeBanner: false,
         );
   }
 }
