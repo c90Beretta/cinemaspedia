@@ -1,4 +1,6 @@
+import 'package:cinepedia/config/constants/enviroment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -11,8 +13,8 @@ class HomeScreen extends StatelessWidget {
         
         title: const Center(child:  Text('Prueba de Cinemapedia')),
       ),
-      body: const Center(
-        child: Text('Home Screen'),
+      body:  Center(
+        child: Text(Enviroment.theMoviedbKey),
       )
     );
   }
