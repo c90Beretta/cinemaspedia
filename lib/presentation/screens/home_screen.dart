@@ -4,6 +4,8 @@ import 'package:cinepedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../widgets/shared/custom_navigationbar.dart';
+
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
   const HomeScreen({super.key});
@@ -11,10 +13,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  const Scaffold(
+      bottomNavigationBar: 
+      CustomNavigationBar(),
+      
       body:  _HomeView(),
     );
   }
 }
+
+
 
 class _HomeView extends ConsumerStatefulWidget {
   const _HomeView();
