@@ -1,4 +1,5 @@
 import 'package:cinepedia/presentation/providers/providers.dart';
+import 'package:cinepedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,18 +45,12 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       );
     }
 
-    return ListView.builder(
-      itemCount: nowPlayingMovies.length,
+    return Column(
+      children: [
+        CustomAPPBar(),
 
-      itemBuilder: (context, index) {
-        final movie = nowPlayingMovies[index];
-        
-        return ListTile(
-          title: Text(movie.title),
-        );
-        
-      },
-      
+        MoviesSlideShow(movie: nowPlayingMovies),
+      ],
     );
   }
 }
