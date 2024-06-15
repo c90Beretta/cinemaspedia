@@ -4,7 +4,6 @@ import 'package:cinepedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/shared/custom_navigationbar.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -13,10 +12,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  const Scaffold(
+      body:  _HomeView(),
       bottomNavigationBar: 
       CustomNavigationBar(),
-      
-      body:  _HomeView(),
     );
   }
 }
@@ -43,6 +41,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   Widget build(BuildContext context) {
     final slideShowMovies = ref.watch(moviesSlideshowProvider);
+    final  nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
 
 
 
@@ -51,6 +50,13 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         const CustomAPPBar(),
 
         MoviesSlideShow(movie: slideShowMovies),
+
+
+        MovieHorizontalListView(
+          movie: nowPlayingMovies,
+          title: "En Cartelera",
+          subTitle: "Lunes 20",),
+         
         
       ],
     );

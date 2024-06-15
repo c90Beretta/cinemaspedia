@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return  BottomNavigationBar(
-      items: [
+      elevation: 0,
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home), 
           label: 'Inicio'),
@@ -16,8 +18,8 @@ class CustomNavigationBar extends StatelessWidget {
           label: 'Categorias'),    
           
         BottomNavigationBarItem(
-          icon: Icon(Icons.label_outline_rounded), 
-          label: 'Categorias'),
+          icon: Icon(Icons.favorite_border_rounded), 
+          label: 'Favoritos'),
       ],
       
       
