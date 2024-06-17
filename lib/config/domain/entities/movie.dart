@@ -1,6 +1,5 @@
 
 
-import 'package:cinepedia/presentation/widgets/movies/movie_horizontal_listview.dart';
 
 class Movie {
   final bool adult;

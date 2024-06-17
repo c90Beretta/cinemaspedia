@@ -1,42 +1,73 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cinepedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../../config/domain/entities/movie.dart';
 
 
-class MovieHorizontalListView extends StatelessWidget {
+class MovieHorizontalListView extends StatefulWidget {
 
   final List<Movie> movie;
   final String? title;
   final String? subTitle;
   final VoidCallback? loadNextPage;
 
-
-
-
-
   const MovieHorizontalListView({super.key, required this.movie, this.title, this.subTitle, this.loadNextPage});
+
+  @override
+  State<MovieHorizontalListView> createState() => _MovieHorizontalListViewState();
+}
+
+class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
+
+  final scrollController = ScrollController();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if(widget.loadNextPage == null) return;
+      if(scrollController.position.pixels + 100 >= scrollController.position.maxScrollExtent){
+        const AlertDialog(
+          title: Text('Cargando...'),
+          content: LinearProgressIndicator(),
+        );
+        widget.loadNextPage!();
+      }
+
+
+
+
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return  SizedBox(
-      height: 362,
+      height: 390,
       width: double.infinity,
       child: Column(
         children: [
           _Title(
-            title: title,
-            subTitle: subTitle,),
+            title: widget.title,
+            subTitle: widget.subTitle,),
 
           Expanded(
             child: ListView.builder(
-              itemCount: movie.length,
+              controller: scrollController,
+              itemCount: widget.movie.length,
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                return _Slide(movie: movie[index]);
+                return _Slide(movie: widget.movie[index]);
                 
               },
               
@@ -61,8 +92,6 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final textStyle = Theme.of(context).textTheme;
-
-
 
     return   Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -102,6 +131,8 @@ class _Slide extends StatelessWidget {
 
           const SizedBox(height: 5),
 
+
+            //* TITULO DE LA PELICULA
            SizedBox(
             width: 160,
             child: Text(
@@ -111,6 +142,29 @@ class _Slide extends StatelessWidget {
               style: textStyle.titleSmall,
             ),
           ),
+
+
+          const SizedBox(height: 5),
+
+          //* RATING DE LA PELICULA
+          Row(
+            children: [
+             const Icon(Icons.star, size: 15, color: Colors.amber,),
+             const SizedBox(width: 3),
+              Text(
+                movie.voteAverage.toString().substring(0,3),
+                style: textStyle.titleSmall?.copyWith(color: Colors.amber.shade800),
+              ),
+             const SizedBox(width: 6),
+              Text(HumanFormats.number(movie.popularity).toString() ,
+              
+                style: textStyle.titleSmall?.copyWith(color: Colors.grey.shade600),
+              ),
+
+            ],
+          )
+
+
         ],
       ),
     );

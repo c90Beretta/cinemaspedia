@@ -1,5 +1,7 @@
 
 
+// ignore_for_file: constant_identifier_names
+
 class MovieDBData {
     final bool adult;
     final String backdropPath;
