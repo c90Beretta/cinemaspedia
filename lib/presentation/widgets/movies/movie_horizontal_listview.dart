@@ -52,7 +52,7 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
   @override
   Widget build(BuildContext context) {
     return  SizedBox(
-      height: 390,
+      height: 430,
       width: double.infinity,
       child: Column(
         children: [
@@ -97,16 +97,16 @@ class _Slide extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
 
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 150,
+            width: 170,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeIn(
                 //* IMAGEN PARA EL LIST VIEW
                 child: Image.network(
-                  width: 150,
+                  width: 160,
                    movie.posterPath,
                    loadingBuilder: (context, child, loadingProgress) {
                       if(loadingProgress == null) return child;
@@ -134,9 +134,8 @@ class _Slide extends StatelessWidget {
 
             //* TITULO DE LA PELICULA
            SizedBox(
-            width: 160,
+            width: 140,
             child: Text(
-              
               movie.title,
               maxLines: 2,
               style: textStyle.titleSmall,
@@ -144,24 +143,27 @@ class _Slide extends StatelessWidget {
           ),
 
 
-          const SizedBox(height: 5),
+          const SizedBox(height: 10),
 
           //* RATING DE LA PELICULA
-          Row(
-            children: [
-             const Icon(Icons.star, size: 15, color: Colors.amber,),
-             const SizedBox(width: 3),
-              Text(
-                movie.voteAverage.toString().substring(0,3),
-                style: textStyle.titleSmall?.copyWith(color: Colors.amber.shade800),
-              ),
-             const SizedBox(width: 6),
-              Text(HumanFormats.number(movie.popularity).toString() ,
-              
-                style: textStyle.titleSmall?.copyWith(color: Colors.grey.shade600),
-              ),
-
-            ],
+          SizedBox(
+            width: 150,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+               const Icon(Icons.star, size: 15, color: Colors.amber,),
+               const SizedBox(width: 3),
+                Text(
+                  movie.voteAverage.toString().substring(0,3),
+                  style: textStyle.titleSmall?.copyWith(color: Colors.amber.shade800),
+                ),
+               const Spacer(),
+                Text("(${HumanFormats.number(movie.popularity).toString()})" ,
+                
+                  style: textStyle.titleSmall?.copyWith(color: Colors.grey.shade600),
+                ),
+              ],
+            ),
           )
 
 
