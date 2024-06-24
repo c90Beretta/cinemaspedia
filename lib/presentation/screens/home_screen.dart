@@ -30,12 +30,21 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     super.initState();
 
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(getUpComingMoviesProvider.notifier).loadNextPage();
+
   }
 
   @override
   Widget build(BuildContext context) {
     final slideShowMovies = ref.watch(moviesSlideshowProvider);
+
+
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    final upComingMovies = ref.watch(getUpComingMoviesProvider);
 
     return CustomScrollView(
 
@@ -62,21 +71,30 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                   loadNextPage: () {},
                 ),
                 MovieHorizontalListView(
-                  movie: nowPlayingMovies,
-                  title: "Proximamente",
-                  subTitle: "Este Mes",
+                  movie: topRatedMovies,
+                  title: "TOP RATED",
+                  subTitle: "Todo el tiempo",
                   loadNextPage: () {
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-                    // ref.read(popularMoviesProvider.notifier).loadNextPage();
+                    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   },
                 ),
                 MovieHorizontalListView(
-                  movie: nowPlayingMovies,
+                  movie: popularMovies,
                   title: "Populares",
                   subTitle: "Top 20",
                   loadNextPage: () {
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-                    // ref.read(popularMoviesProvider.notifier).loadNextPage();
+                    ref.read(popularMoviesProvider.notifier).loadNextPage();
+                  },
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                   MovieHorizontalListView(
+                  movie: upComingMovies,
+                  title: "Proximamente",
+                  subTitle: "Fechas de estreno",
+                  loadNextPage: () {
+                    ref.read(getUpComingMoviesProvider.notifier).loadNextPage();
                   },
                 ),
                 const SizedBox(
