@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinepedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../config/domain/entities/movie.dart';
 
@@ -109,7 +110,14 @@ class _Slide extends StatelessWidget {
                   width: 160,
                    movie.posterPath,
                    loadingBuilder: (context, child, loadingProgress) {
-                      if(loadingProgress == null) return child;
+                      if(loadingProgress == null) {
+                        return GestureDetector(
+                        onTap: () {
+                         context.push('/movie/${movie.id}');
+                        },
+                        child: child,)
+                      ;
+                      }
                       return const Padding(
                         padding: EdgeInsets.all(10),
                         child: Center(

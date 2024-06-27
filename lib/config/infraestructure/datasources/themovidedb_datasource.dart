@@ -74,4 +74,14 @@ class MovieDBDatasource extends MoviesDataSource {
 
     return _jsonToMovie(response.data);
   }
+  
+  @override
+  Future<List<Movie>> getMovieByID(String id) async {
+    final response = await dio.get('/movie/$id',);  
+
+        return _jsonToMovie(response.data);
+
+
+
+  }
 }
