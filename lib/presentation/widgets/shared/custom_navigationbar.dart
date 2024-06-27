@@ -19,7 +19,11 @@ class CustomNavigationBar extends StatelessWidget {
           
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_border_rounded), 
-          label: 'Favoritos'),
+          label: 'Favoritos',
+          
+          
+          ),
+          
       ],
       
       
