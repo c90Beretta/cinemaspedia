@@ -44,7 +44,6 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
           _CustomSliverAppBar(movie: movie),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-
             (context, index) =>   _Moviedetails(movie: movie),
             childCount: 1,))
             
@@ -78,30 +77,65 @@ class _Moviedetails extends StatelessWidget {
           children: [
 
             
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Image.network(movie.backdropPath, width: size.width * 0.3, height: size.height * 0.3, fit: BoxFit.cover,),
-              ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.network(movie.backdropPath, width: size.width * 0.3, height: size.height * 0.3, fit: BoxFit.cover,),
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber, size: 20,),
+                    const SizedBox(width: 10,),
+                    Text('Calificación: ${movie.voteAverage}', style: textStyle.bodyMedium,),
+                  ],
+                ),
+              ],
             ),
             const SizedBox(width: 15,),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 15,),
                   Text(movie.title, style: textStyle.headlineLarge,),
-                  Text(movie.releaseDate.toString(),),
-                  Text(movie.overview, style: textStyle.bodyLarge,),
+                  Text(movie.id.toString(), style: textStyle.bodySmall,),
+                  Text(movie.releaseDate.toString(), style: textStyle.bodySmall,),
+                  Text(movie.overview, style: textStyle.bodyLarge,  ),
+
+
                 ],
               ),
             ),
-            const SizedBox(height: 200,)
           ],
         ),
+            //TODO: Genero de pelicula
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Wrap(
+              children: [
+                ...movie.genreIds.map((gender) => Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Chip(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    label: Text(gender, style: textStyle.bodyMedium,)))),
+              ],
+            ),),
+
+
+
+
+
+            //TODO: MOSTRAr ACTORES
+            const SizedBox(height: 200,)
+
+            //TODO Añadir boton de Favoritos
 
       ],
     );
