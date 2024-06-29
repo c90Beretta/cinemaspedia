@@ -1,6 +1,10 @@
+import 'dart:js';
+
 import 'package:cinepedia/config/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/providers/movies/movie_info_provider.dart';
+import 'package:cinepedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -22,6 +26,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   void initState() {
     super.initState();
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
 
   }
   @override
@@ -133,11 +138,41 @@ class _Moviedetails extends StatelessWidget {
 
 
             //TODO: MOSTRAr ACTORES
-            const SizedBox(height: 200,)
+            const SizedBox(height: 100,),
+             _ActorByMovie(movieID: movie.id.toString(),),
 
             //TODO Añadir boton de Favoritos
 
       ],
+    );
+  }
+}
+
+
+class _ActorByMovie extends ConsumerWidget {
+  final String movieID;
+  const _ActorByMovie({ required this.movieID});
+
+  @override
+  Widget build(BuildContext contex,ref)  {
+    final actorsbyMovie = ref.watch(actorsByMovieProvider);
+    if(actorsbyMovie[movieID] == null){
+      return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
+    }
+    final actors = actorsbyMovie[movieID]!;
+    return  SizedBox(
+      child: ListView.builder(
+        itemCount: actors.length,
+        itemBuilder: (context, index) {
+          final actor = actors[index];
+          return ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.network(actor.profilePath ?? '', width: 50, height: 50, fit: BoxFit.cover,),
+            ),
+            title: Text(actor.name?? ''),
+          );
+        },),
     );
   }
 }
