@@ -1,10 +1,8 @@
-import 'dart:js';
 
 import 'package:cinepedia/config/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/providers/movies/movie_info_provider.dart';
 import 'package:cinepedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -119,7 +117,6 @@ class _Moviedetails extends StatelessWidget {
             ),
           ],
         ),
-            //TODO: Genero de pelicula
             Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Wrap(
               children: [
@@ -137,8 +134,11 @@ class _Moviedetails extends StatelessWidget {
 
 
 
-            //TODO: MOSTRAr ACTORES
-            const SizedBox(height: 100,),
+         
+                  Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 17.0),
+                   child: Text('Actores', style: textStyle.titleLarge ),
+                 ),
              _ActorByMovie(movieID: movie.id.toString(),),
 
             //TODO Añadir boton de Favoritos
@@ -149,28 +149,53 @@ class _Moviedetails extends StatelessWidget {
 }
 
 
-class _ActorByMovie extends ConsumerWidget {
+class _ActorByMovie extends ConsumerWidget  {
   final String movieID;
   const _ActorByMovie({ required this.movieID});
 
   @override
   Widget build(BuildContext contex,ref)  {
     final actorsbyMovie = ref.watch(actorsByMovieProvider);
+
+
     if(actorsbyMovie[movieID] == null){
       return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
     }
     final actors = actorsbyMovie[movieID]!;
+
+
     return  SizedBox(
+      height: 300,
       child: ListView.builder(
+        scrollDirection: Axis.horizontal,
         itemCount: actors.length,
+        
         itemBuilder: (context, index) {
           final actor = actors[index];
-          return ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Image.network(actor.profilePath ?? '', width: 50, height: 50, fit: BoxFit.cover,),
+         
+          return Container(
+            padding: const EdgeInsets.all(8),
+            width: 135,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+
+
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                   actor.profilePath, 
+                  width: 135, 
+                  height: 180, 
+                  fit: BoxFit.cover,),
+                ),
+
+                const SizedBox(height: 5,),
+                Text(actor.name, maxLines: 2,),
+                Text(actor.character, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),),
+              ],
             ),
-            title: Text(actor.name?? ''),
           );
         },),
     );

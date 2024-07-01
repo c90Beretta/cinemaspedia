@@ -1,9 +1,9 @@
 
 class Actor{
-  final int? id;
-  final String? name;
-  final String? character;
-  final String? profilePath;
+  final int id;
+  final String name;
+  final String character;
+  final String profilePath;
 
   Actor({
     required this.id,
