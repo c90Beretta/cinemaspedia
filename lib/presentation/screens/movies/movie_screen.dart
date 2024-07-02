@@ -141,7 +141,7 @@ class _Moviedetails extends StatelessWidget {
                  ),
              _ActorByMovie(movieID: movie.id.toString(),),
              const SizedBox(height: 20,),
-             _LeaveAReview(),
+             _LeaveAReview(movie: movie,),
 
             //TODO Añadir boton de Favoritos
 
@@ -197,9 +197,7 @@ class _ActorByMovie extends ConsumerWidget  {
                   const SizedBox(height: 5,),
                   Text(actor.name, maxLines: 2,),
                   Text(actor.character, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  )
+                
                 ],
               ),
             ),
