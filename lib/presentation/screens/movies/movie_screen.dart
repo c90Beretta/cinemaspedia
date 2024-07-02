@@ -1,4 +1,5 @@
 
+import 'package:animate_do/animate_do.dart';
 import 'package:cinepedia/config/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/providers/movies/movie_info_provider.dart';
 import 'package:cinepedia/presentation/providers/providers.dart';
@@ -107,11 +108,10 @@ class _Moviedetails extends StatelessWidget {
                 children: [
                   const SizedBox(height: 15,),
                   Text(movie.title, style: textStyle.headlineLarge,),
+                  const SizedBox(width: 120, ),
                   Text(movie.id.toString(), style: textStyle.bodySmall,),
                   Text(movie.releaseDate.toString(), style: textStyle.bodySmall,),
                   Text(movie.overview, style: textStyle.bodyLarge,  ),
-
-
                 ],
               ),
             ),
@@ -140,6 +140,8 @@ class _Moviedetails extends StatelessWidget {
                    child: Text('Actores', style: textStyle.titleLarge ),
                  ),
              _ActorByMovie(movieID: movie.id.toString(),),
+             const SizedBox(height: 20,),
+             _LeaveAReview(),
 
             //TODO Añadir boton de Favoritos
 
@@ -173,28 +175,33 @@ class _ActorByMovie extends ConsumerWidget  {
         itemBuilder: (context, index) {
           final actor = actors[index];
          
-          return Container(
-            padding: const EdgeInsets.all(8),
-            width: 135,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-
-
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                   actor.profilePath, 
-                  width: 135, 
-                  height: 180, 
-                  fit: BoxFit.cover,),
-                ),
-
-                const SizedBox(height: 5,),
-                Text(actor.name, maxLines: 2,),
-                Text(actor.character, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),),
-              ],
+          return FadeInRight(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              width: 135,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+            
+            
+            
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                     actor.profilePath, 
+                    width: 135, 
+                    height: 180, 
+                    fit: BoxFit.cover,),
+                  ),
+            
+                  const SizedBox(height: 5,),
+                  Text(actor.name, maxLines: 2,),
+                  Text(actor.character, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  )
+                ],
+              ),
             ),
           );
         },),
@@ -225,8 +232,15 @@ class _CustomSliverAppBar extends StatelessWidget {
       //   title: Text(movie.title, style: const TextStyle(fontSize: 20), textAlign: TextAlign.start,),
         flexibleSpace: Stack(
           children: [
-            Positioned.fill(child: Image.network(movie.posterPath
-            ,fit: BoxFit.cover,),),
+            Positioned.fill(child: Image.network(
+            movie.posterPath,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress != null) return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
+              return FadeIn(child: child);
+            },
+            ),
+            ),
             const SizedBox.expand(
               child: DecoratedBox(decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -259,5 +273,23 @@ class _CustomSliverAppBar extends StatelessWidget {
         
       );
     
+  }
+}
+
+
+
+class _LeaveAReview extends StatelessWidget {
+  final Movie movie;
+
+
+  const _LeaveAReview({required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+  final String idMovie = movie.id.toString();
+
+    return  Container(
+      child: Text(idMovie),
+    );
   }
 }
