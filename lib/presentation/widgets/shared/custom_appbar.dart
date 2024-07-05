@@ -1,7 +1,9 @@
+import 'package:cinepedia/config/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinepedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 
 class CustomAPPBar extends ConsumerWidget {
@@ -11,40 +13,46 @@ class CustomAPPBar extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
 
     final colors = Theme.of(context).colorScheme;
-    final titleStyle = Theme.of(context).textTheme.titleMedium;
+    final titleStyle = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
 
     return  SafeArea(
       bottom: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: Row(
-            children: [
-              Icon(Icons.movie_outlined, color: colors.primary ),
-              const SizedBox(width: 10),
-              Text('Cinepedia', style: titleStyle,),
-      
-      
-              const Spacer(),
-      
-      
-              IconButton(
-              onPressed: (){
-                final movierepository = ref.read(movieRepositoryProvider);
-                 
-                showSearch(
-                context:context, 
-                delegate: SearchMovieDelegate(
-                  searchMovieCallBack: movierepository.searchMovie),);
-              }, 
-              icon:  Icon(Icons.search_rounded, color: colors.primary),
-              
-              ),
-            ],
-          ),
-      
+      child: SizedBox(
+        height: size.height * .15,
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 10),
+            Icon(Icons.movie_outlined, color: colors.primary, weight: 40, ),
+            const SizedBox(width: 10),
+            Text('Cinepedia', style: titleStyle.headlineLarge, ),
+            
+            
+            const Spacer(),
+            
+            IconButton (
+            onPressed: () {
+             final movierepository = ref.read(movieRepositoryProvider);     
+             
+             showSearch<Movie?>(
+              context:context, 
+              delegate: SearchMovieDelegate(
+                searchMovieCallBack: movierepository.searchMovie),).then((movie) {
+                  if(movie == null) return;
+                  context.push('/movie/${movie.id}');
+
+                });
+    
+            }, 
+            icon:  Icon(Icons.search_rounded, color: colors.primary,
+             ),
+            ),
+          ],
         ),
+            
       ),
       
     );

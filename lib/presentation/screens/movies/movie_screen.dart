@@ -34,9 +34,6 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   }
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
     final  movie = ref.watch(movieInfoProvider)[widget.movieId];
@@ -219,9 +216,9 @@ class _CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-
+    
     return SliverAppBar(
+      
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.8,
       // foregroundColor: Colors.white,
