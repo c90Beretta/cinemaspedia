@@ -283,8 +283,6 @@ class _LeaveAReview extends StatelessWidget {
   Widget build(BuildContext context) {
   final String idMovie = movie.id.toString();
 
-    return  Container(
-      child: Text(idMovie),
-    );
+    return  Text(idMovie);
   }
 }

@@ -21,6 +21,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
 
   SearchMovieDelegate( {required this.searchMovieCallBack});
 
+    void clearStreams(){
+        debounceMovies.close();
+    }
+
   void _onQueryChange(String query){
         print("Actualizacion de Query");
     if(_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
@@ -50,6 +54,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
           icon: const Icon(Icons.clear), 
           onPressed: (){
             query = "";
+            //Eliminar El Buscador
           }),
         )
       ];
@@ -60,6 +65,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
     return 
         IconButton(icon: const Icon(Icons.arrow_back_ios_rounded) ,
         onPressed: (){
+        debounceMovies.close();
+        //terminar el debounce
           close(context, null);
         }
 
@@ -81,10 +88,17 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
       // future: searchMovieCallBack(query),  
       builder: (context, snapshot) {
         final movies = snapshot.data?? [];
+
+
+        if(movies.isEmpty){
+          return const Center(child: Text("No hay resultados"),);
+        }
+
+        
         return ListView.builder(
           itemCount: movies.length,
           itemBuilder: (context, index) {
-            return _ListViewPelicula(movie: movies[index], onMovieselected: close,);
+            return _MovieItem(movie: movies[index], onMovieselected: close,);
           },
           
           );
@@ -96,18 +110,12 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
 
 
 
-
-
-
-
-
-
-class _ListViewPelicula extends StatelessWidget {
+class _MovieItem extends StatelessWidget {
   
   final Movie movie;
   final Function onMovieselected;
 
-  const _ListViewPelicula({ required this.movie, required this.onMovieselected});
+  const _MovieItem({ required this.movie, required this.onMovieselected});
 
   @override
   Widget build(BuildContext context) {
