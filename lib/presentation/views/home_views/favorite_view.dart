@@ -1,3 +1,4 @@
+import 'package:cinepedia/presentation/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 
 
@@ -13,7 +14,7 @@ class FavoritesView extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: const Text('Favoritos'),
+        child: const AppLoader(mensaje: 'Pantallas Favoritos!',),
       ),
     );
   }

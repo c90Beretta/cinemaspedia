@@ -6,7 +6,7 @@ class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar({super.key});
 
    static int getCurrentIndex(BuildContext context) {
-    final Uri? locationURI = GoRouterState.of(context).uri;
+    final Uri locationURI = GoRouterState.of(context).uri;
     final String? location = GoRouterState.of(context).name;
         print('$locationURI');
 
@@ -30,7 +30,7 @@ class CustomNavigationBar extends StatelessWidget {
   void onItemTap(BuildContext context, int index){
     switch(index){
       case 0: context.go('/');
-      case 1: context.go('/');
+      case 1: context.go('/categorias');
       case 2: context.go('/favorites');
       
       default:

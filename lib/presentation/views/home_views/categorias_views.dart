@@ -1,3 +1,4 @@
+import 'package:cinepedia/presentation/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 
 class CategoriasViews extends StatelessWidget {
@@ -13,7 +14,7 @@ class CategoriasViews extends StatelessWidget {
       
       ),
       body: const Center(
-      child: Text("Vista de la pantalla de Categorias"),
+      child: AppLoader(mensaje: 'Categorias on the work!',),
 
       ),
     );
