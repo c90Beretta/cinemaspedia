@@ -212,7 +212,6 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
             ),
           );
         }
-
         return ListView.builder(
           itemCount: movies.length,
           itemBuilder: (context, index) {
