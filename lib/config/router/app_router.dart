@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 final appRouter = GoRouter(
   initialLocation: '/home/0',
   routes: [
+
+
     GoRoute(
       path: "/home/:page",
       name: HomeScreen.routeName,
@@ -17,15 +19,20 @@ final appRouter = GoRouter(
 
 
     GoRoute(
-      path: "/movie/:id",
+      path: "/home/0/movie/:id",
       name: MovieScreen.routeName,
       builder: (context, state){ 
         final movieid = state.pathParameters['id'] ?? 'no-id';
         return MovieScreen(movieId:movieid ,);
         },
-    )
+    ),
     
-    
+    GoRoute(
+      path: '/',
+    redirect: (__ , ___) => '/home/0',
+    ),
+
+
     
     
     ]

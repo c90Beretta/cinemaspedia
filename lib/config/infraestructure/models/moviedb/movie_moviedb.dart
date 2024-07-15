@@ -60,6 +60,7 @@ class MovieDBData {
         "backdrop_path": backdropPath,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
+        // ignore: collection_methods_unrelated_type
         "original_language": originalLanguageValues.reverse[originalLanguage],
         "original_title": originalTitle,
         "overview": overview,

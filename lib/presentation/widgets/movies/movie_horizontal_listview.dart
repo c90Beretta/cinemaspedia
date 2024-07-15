@@ -113,7 +113,7 @@ class _Slide extends StatelessWidget {
                       if(loadingProgress == null) {
                         return GestureDetector(
                         onTap: () {
-                         context.push('/movie/${movie.id}');
+                         context.push('/home/0/movie/${movie.id}');
                         },
                         child: child,)
                       ;
