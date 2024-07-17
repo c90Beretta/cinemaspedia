@@ -1,6 +1,15 @@
 import 'package:cinepedia/presentation/providers/providers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/domain/entities/movie.dart';
+
+
+final  iconFavorite = StateProvider<bool>((ref) {
+   bool isfavorite = true;
+  return isfavorite;
+
+});
+
 
 final movieInfoProvider = StateNotifierProvider<MovieMapNotifier,Map<String,Movie>>((ref) {
   final movieRepository = ref.watch(movieRepositoryProvider);
@@ -11,6 +20,11 @@ final movieInfoProvider = StateNotifierProvider<MovieMapNotifier,Map<String,Movi
 
 
 
+
+
+
+
+
 /*  MAPA
   {
     '505642': Movie();  --- LLAMADO 
@@ -18,12 +32,6 @@ final movieInfoProvider = StateNotifierProvider<MovieMapNotifier,Map<String,Movi
     '505642': Movie();  --- LLAMADO 
   }
 */ 
-
-
-
-
-
-
 
 
 typedef GetMovieCallBack = Future<Movie> Function(String movieid);

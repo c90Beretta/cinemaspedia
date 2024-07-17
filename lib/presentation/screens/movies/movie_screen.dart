@@ -2,7 +2,6 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:cinepedia/config/domain/entities/movie.dart';
-import 'package:cinepedia/presentation/providers/movies/movie_info_provider.dart';
 import 'package:cinepedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -141,7 +140,6 @@ class _Moviedetails extends StatelessWidget {
              const SizedBox(height: 20,),
              _LeaveAReview(movie: movie,),
 
-            //TODO Añadir boton de Favoritos
 
       ],
     );
@@ -208,26 +206,34 @@ class _ActorByMovie extends ConsumerWidget  {
 
 
 
-class _CustomSliverAppBar extends StatelessWidget {
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
   const _CustomSliverAppBar({
     required this.movie
     });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final size = MediaQuery.of(context).size;
     final iconsize = size.height * 0.04;
+    final iconchange = ref.watch(iconFavorite);
     
     return SliverAppBar(
       actions: [
         IconButton(
-          icon:  Icon(Icons.favorite_border_rounded, size: iconsize,),
+          icon:  iconchange 
+          ?  Icon(Icons.favorite_border_rounded,size:iconsize )
+          :  Icon(Icons.favorite_rounded, size:iconsize , color: Colors.red,),
           //  icon:  Icon(Icons.favorite_rounded, color: Colors.red, size: iconsize,),
           
           onPressed: () {
-            //TODO Añadir a favoritos
+            ref.watch(iconFavorite.notifier).update( (isfavorite) => !isfavorite);
+           ref.watch(localStorageRepositoryProvider);
+           print('Agregar a favoritos ');
+           
+           //todo:
           }
+  
           
           )
       ],
