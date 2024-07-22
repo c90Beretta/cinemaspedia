@@ -1,14 +1,11 @@
 import 'package:cinepedia/presentation/providers/providers.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/domain/entities/movie.dart';
 
 
-final  iconFavorite = StateProvider<bool>((ref) {
-   bool isfavorite = true;
-  return isfavorite;
 
-});
+
+
 
 
 final movieInfoProvider = StateNotifierProvider<MovieMapNotifier,Map<String,Movie>>((ref) {
@@ -17,11 +14,6 @@ final movieInfoProvider = StateNotifierProvider<MovieMapNotifier,Map<String,Movi
 
 });
   
-
-
-
-
-
 
 
 

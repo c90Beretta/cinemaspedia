@@ -10,7 +10,7 @@ class ActorMapper {
     character: cast.character ?? 'No character',
     profilePath: cast.profilePath != null
     ? 'https://image.tmdb.org/t/p/w500${cast.profilePath}'
-    : 'https://www.researchgate.net/profile/Maria-Monreal/publication/315108532/figure/fig1/AS:472492935520261@1489662502634/Figura-2-Avatar-que-aparece-por-defecto-en-Facebook.png',
+    : 'https://www.shutterstock.com/image-vector/default-avatar-photo-placeholder-grey-260nw-2010557507.jpg',
     
   );
     

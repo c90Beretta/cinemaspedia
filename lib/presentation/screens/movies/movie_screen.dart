@@ -205,6 +205,11 @@ class _ActorByMovie extends ConsumerWidget  {
 
 
 
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int movieid)   {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return  localStorageRepository.isMovieFavorite(movieid);
+});
+
 
 class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
@@ -216,24 +221,23 @@ class _CustomSliverAppBar extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final size = MediaQuery.of(context).size;
     final iconsize = size.height * 0.04;
-    final iconchange = ref.watch(iconFavorite);
-    
+    final isFavoritefuture = ref.watch(isFavoriteProvider(movie.id));
+
     return SliverAppBar(
       actions: [
         IconButton(
-          icon:  iconchange 
-          ?  Icon(Icons.favorite_border_rounded,size:iconsize )
-          :  Icon(Icons.favorite_rounded, size:iconsize , color: Colors.red,),
-          //  icon:  Icon(Icons.favorite_rounded, color: Colors.red, size: iconsize,),
+          icon:  isFavoritefuture.when(
+            data: (isFavorite) =>  isFavorite 
+            ? Icon(Icons.favorite_rounded, size:iconsize , color: Colors.red,)
+            : Icon(Icons.favorite_border_rounded,size:iconsize ),
+            error: (error, stackTrace) =>  Icon(Icons.favorite_border_rounded, size:iconsize ),
+            loading: ()=> const CircularProgressIndicator(strokeWidth: 2,) 
+            ),
           
-          onPressed: () {
-            ref.watch(iconFavorite.notifier).update( (isfavorite) => !isfavorite);
-           ref.watch(localStorageRepositoryProvider);
-           print('Agregar a favoritos ');
-           
-           //todo:
+          onPressed: () async {
+            await ref.read(localStorageRepositoryProvider).toggleFavorite(movie);
+            ref.invalidate(isFavoriteProvider(movie.id));       
           }
-  
           
           )
       ],
