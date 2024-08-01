@@ -4,3 +4,6 @@ export "package:cinepedia/presentation/widgets/movies/movies_slideshow.dart";
 export 'package:cinepedia/presentation/widgets/movies/movie_horizontal_listview.dart';
 export 'package:cinepedia/presentation/widgets/shared/custom_navigationbar.dart';
 export 'package:cinepedia/presentation/widgets/shared/full_screen_loader.dart';
+export 'package:cinepedia/presentation/widgets/movies/movieposterlink.dart';
+export 'package:cinepedia/presentation/widgets/movies/movie_mansonry.dart';
+

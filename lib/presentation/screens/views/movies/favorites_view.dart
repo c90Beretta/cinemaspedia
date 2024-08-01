@@ -2,9 +2,9 @@
 
 
 import 'package:cinepedia/presentation/providers/storage/favorites_movies_provider.dart';
+import 'package:cinepedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class FavoritesView extends ConsumerStatefulWidget {
   const FavoritesView({super.key});
@@ -15,40 +15,48 @@ class FavoritesView extends ConsumerStatefulWidget {
 
 class _FavoritesViewState extends ConsumerState<FavoritesView>  {
 
+    bool isLoading = false;
+    bool islastPage = false;  
+
+
     @override
   void initState() {
     super.initState();
+     loadNextPage();
+    }
 
-  ref.read(favoritesMoviesProvider.notifier).loadNextPage();
-  }
+
+    void loadNextPage() async{
+        if( isLoading || islastPage) return;
+
+        isLoading = true;
+        final movies = await ref.read(favoritesMoviesProvider.notifier).loadNextPage();
+        isLoading = false;
+        if(movies.isEmpty){
+          islastPage = true;
+        }
+    }
+
+
+
 
   @override
   Widget build(BuildContext context) {
     final favoriteMovies = ref.watch(favoritesMoviesProvider).values.toList();
 
-  //   int page= 1;
+
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255,244,247,252),
       appBar: AppBar(
         title: const Text("Favorite Movie view"),
         centerTitle: true,
         ),
-      body: ListView.builder(
-        itemCount: favoriteMovies.length,
-        itemBuilder: (context, index) {
-          final movie = favoriteMovies[index];
-         
-           return ListTile(
-            title: Text(movie.title),
-            subtitle: Text(movie.id.toString()),
-            onTap: () => context.push('/home/0/movie/${movie.id}'),
+      body: favoriteMovies.isEmpty ? const Center(child: Text("No hay Peliculas Favoritas"),) : 
+      MovieMansonry(
+        movies: favoriteMovies, loadNextPage: loadNextPage,)
 
-            
-            );
-        },
-
-        )
-      
+  
     );
   }
 }
