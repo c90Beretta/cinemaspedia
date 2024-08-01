@@ -27,14 +27,16 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>  {
 
 
     void loadNextPage() async{
+      print("LoadNextPage CALL");
         if( isLoading || islastPage) return;
 
         isLoading = true;
         final movies = await ref.read(favoritesMoviesProvider.notifier).loadNextPage();
-        isLoading = false;
+        
         if(movies.isEmpty){
           islastPage = true;
         }
+        isLoading = false;
     }
 
 

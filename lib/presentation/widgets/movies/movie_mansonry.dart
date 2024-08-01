@@ -15,22 +15,38 @@ class MovieMansonry extends StatefulWidget {
    this.loadNextPage, 
   
    });
+   
 
   @override
   State<MovieMansonry> createState() => _MovieMansonryState();
+ 
 }
 
 class _MovieMansonryState extends State<MovieMansonry> {
-  
+
+  final ScrollController loadNextPage = ScrollController();
+
+
+   @override
+  void initState() {
+    super.initState();
+
+    loadNextPage.addListener(() {
+      
+      if (loadNextPage.position.pixels >= (loadNextPage.position.maxScrollExtent - 150)) {
+        widget.loadNextPage?.call();
+      }
+    });
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: MasonryGridView.count(
+        controller: loadNextPage,
         physics: const BouncingScrollPhysics(),
-        
-        primary: true,
         padding: const EdgeInsets.all(10),
         crossAxisCount: 3,
         mainAxisSpacing: 15,
@@ -38,7 +54,6 @@ class _MovieMansonryState extends State<MovieMansonry> {
         itemCount: widget.movies.length,
         itemBuilder: (context, index) {
           final movie = widget.movies[index];
-           
           if( index == 1){
             return Padding(
               padding: const EdgeInsets.only(top: 60),
