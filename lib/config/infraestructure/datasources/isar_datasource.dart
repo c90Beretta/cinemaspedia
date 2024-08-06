@@ -45,17 +45,13 @@ class IsarDatasource extends LocalStorageDatasource{
     .findFirst();
     
     if(favoriteMovie != null){
-      isar.writeTxnSync(()=> isar.movies.deleteSync(movie.isardID!));
+      isar.writeTxnSync(()=> isar.movies.deleteSync(favoriteMovie.isardID!));
       return;
   }
      isar.writeTxnSync(()=> isar.movies.putSync(movie));
      
 
-
-
 } 
-
-
 
 
   @override

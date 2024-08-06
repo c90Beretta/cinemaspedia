@@ -1,5 +1,6 @@
 import 'package:cinepedia/config/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/widgets/movies/MoviePosterLink.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -30,14 +31,19 @@ class _MovieMansonryState extends State<MovieMansonry> {
    @override
   void initState() {
     super.initState();
-
-    loadNextPage.addListener(() {
-      
+    if(widget.loadNextPage != null)  {
+      loadNextPage.addListener(() {
       if (loadNextPage.position.pixels >= (loadNextPage.position.maxScrollExtent - 150)) {
-        widget.loadNextPage?.call();
+        widget.loadNextPage!.call();
       }
     });
-    
+    }    
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    loadNextPage.dispose();
   }
 
   @override
@@ -45,6 +51,7 @@ class _MovieMansonryState extends State<MovieMansonry> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: MasonryGridView.count(
+        dragStartBehavior: DragStartBehavior.down,
         controller: loadNextPage,
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(10),

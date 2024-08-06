@@ -2,6 +2,7 @@
 
 
 import 'package:cinepedia/presentation/providers/storage/favorites_movies_provider.dart';
+import 'package:cinepedia/presentation/widgets/shared/app_loader.dart';
 import 'package:cinepedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,10 +24,12 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>  {
   void initState() {
     super.initState();
      loadNextPage();
+
     }
 
 
     void loadNextPage() async{
+      // ignore: avoid_print
       print("LoadNextPage CALL");
         if( isLoading || islastPage) return;
 
@@ -37,6 +40,9 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>  {
           islastPage = true;
         }
         isLoading = false;
+
+        ref.watch(favoritesMoviesProvider.notifier);
+
     }
 
 
@@ -49,16 +55,18 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>  {
 
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255,244,247,252),
+     
       appBar: AppBar(
         title: const Text("Favorite Movie view"),
         centerTitle: true,
         ),
-      body: favoriteMovies.isEmpty ? const Center(child: Text("No hay Peliculas Favoritas"),) : 
+      body: favoriteMovies.isEmpty ? const Center(child: AppLoader(text: "No hay favoritos Para Mostrar"),) : 
       MovieMansonry(
-        movies: favoriteMovies, loadNextPage: loadNextPage,)
-
-  
+        movies: favoriteMovies, loadNextPage: loadNextPage,),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => ref.read(favoritesMoviesProvider.notifier).loadNextPage(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
@@ -98,30 +106,3 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>  {
 
 
 
-//  FutureBuilder(
-//         future: ref.watch(localStorageRepositoryProvider).loadMovies(),
-//         builder: (context, snapshot) {
-//           if(snapshot.connectionState == ConnectionState.waiting){
-//             return const Center(child: AppLoader());
-//           }else if(snapshot.hasError){
-//             return const Center(child: Text("Status Failed, No se ha podido Comunicar con BDD"),);
-//           } else{
-        
-//         return ListView.builder(
-//           itemCount: snapshot.data!.length,
-//           itemBuilder: (context, index) {
-//             var movie = snapshot.data?[index];
-//             var movieID = movie!.id.toString();
-            
-//             return ListTile(
-//               onTap: () => context.push('/home/0/movie/$movieID'),
-//               title: Text(movie.title),
-//               subtitle: Text('${movie.id}')
-        
-//             );
-//           },
-        
-//         );
-//           }
-//           }
-//       ),

@@ -3,6 +3,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinepedia/config/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/providers/providers.dart';
+import 'package:cinepedia/presentation/providers/storage/favorites_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -235,8 +236,12 @@ class _CustomSliverAppBar extends ConsumerWidget {
             ),
           
           onPressed: () async {
-            await ref.read(localStorageRepositoryProvider).toggleFavorite(movie);
+            await ref.read(favoritesMoviesProvider.notifier).toggleFavorite(movie);
+            
+            // ref.read(localStorageRepositoryProvider)
+            // .toggleFavorite(movie);
             ref.invalidate(isFavoriteProvider(movie.id));       
+            
           }
           
           )

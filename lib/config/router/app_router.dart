@@ -3,6 +3,7 @@ import 'package:cinepedia/presentation/screens/movies/home_screen.dart';
 import 'package:cinepedia/presentation/screens/movies/movie_screen.dart';
 import 'package:go_router/go_router.dart';
 
+
 final appRouter = GoRouter(
   initialLocation: '/home/0',
   routes: [

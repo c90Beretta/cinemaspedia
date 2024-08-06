@@ -5,7 +5,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class AppLoader extends StatelessWidget {
-  const AppLoader({super.key});
+  final String? text;
+  const AppLoader({super.key, this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,9 @@ class AppLoader extends StatelessWidget {
                   infinite: true,
                   child: Image.asset('assets/edesarrollos_icon_logo.png'),
                 ),
-                const Text("Cargando", style: TextStyle(fontSize: 25),),
+                 Text(
+                  text ??
+                  "Cargando", style: const TextStyle(fontSize: 25),),
               ],
             ),),
           ),
