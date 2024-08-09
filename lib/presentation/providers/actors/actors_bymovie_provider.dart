@@ -13,23 +13,6 @@ final actorsByMovieProvider = StateNotifierProvider<ActorsByMovieProvider,Map<St
 
 
 
-/*  MAPA
-  {
-    '505642': <Actor>[];  --- LLAMADO 
-    '505642': <Actor>[];  --- LLAMADO 
-    '505642': <Actor>[];  --- LLAMADO 
-    '505642': <Actor>[];  --- LLAMADO 
-
-  }
-*/ 
-
-
-
-
-
-
-
-
 typedef GetActorCallBack = Future<List<Actor>> Function(String movieid);
 
 class ActorsByMovieProvider extends StateNotifier <Map<String, List<Actor>>>{

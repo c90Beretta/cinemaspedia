@@ -127,26 +127,100 @@ class _Moviedetails extends StatelessWidget {
                     label: Text(gender, style: textStyle.bodyMedium,)))),
               ],
             ),),
-
-
-
-
-
-         
                   Padding(
                    padding: const EdgeInsets.symmetric(horizontal: 17.0),
                    child: Text('Actores', style: textStyle.titleLarge ),
                  ),
              _ActorByMovie(movieID: movie.id.toString(),),
+             const Divider(),
              const SizedBox(height: 20,),
-             _LeaveAReview(movie: movie,),
-
+             //todo: Agregar peliculas recomendadas
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 17.0),
+                child:  Text('Recomendaciones', style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  ),),
+              ),
+              const SizedBox(height: 20, ),
+              MovieRecomendations(movie.id.toString()),
 
       ],
     );
   }
 }
+class MovieRecomendations extends ConsumerWidget {
+  final String movieID;
+  const MovieRecomendations(this.movieID, {super.key});
 
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final size =  MediaQuery.of(context).size;
+    final recomendationsSize =  size.width * 0.3 ;
+     final movieFuture = ref.watch(getRecomendationsMoviesProvider.notifier).getRecomendations(movieID);
+
+
+
+
+
+    return SizedBox(
+      height: 400,
+      child: FutureBuilder(
+        future: movieFuture,
+        builder: (context, snapshot) {
+          
+        if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error al cargar recomendaciones'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No hay recomendaciones disponibles'));
+          }
+          final movies = snapshot.data!;
+
+        
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 10,
+          itemBuilder: (context, index)  {
+              final movie = movies[index];
+
+
+            return Container(
+              padding: const EdgeInsets.all(8),
+              width: recomendationsSize + 30,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                       movie.posterPath,
+                      width: recomendationsSize - 30,
+                      height: 300,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 5,),
+                  Text('Pelicula', maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, fontSize: 20),),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 20,),
+                      const SizedBox(width: 10,),
+                      Text('Calificación: 8.5', style: const TextStyle(fontSize: 15),),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );}
+      ),
+    );
+  }
+}
 
 class _ActorByMovie extends ConsumerWidget  {
   final String movieID;
@@ -194,7 +268,7 @@ class _ActorByMovie extends ConsumerWidget  {
                   const SizedBox(height: 5,),
                   Text(actor.name, maxLines: 2,),
                   Text(actor.character, maxLines: 2, style: const TextStyle(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),),
-                
+                  
                 ],
               ),
             ),
@@ -225,6 +299,8 @@ class _CustomSliverAppBar extends ConsumerWidget {
     final isFavoritefuture = ref.watch(isFavoriteProvider(movie.id));
 
     return SliverAppBar(
+      pinned: true,
+      title: Text(movie.title, style: const TextStyle(fontSize: 20), textAlign: TextAlign.start,),
       actions: [
         IconButton(
           icon:  isFavoritefuture.when(
@@ -237,9 +313,6 @@ class _CustomSliverAppBar extends ConsumerWidget {
           
           onPressed: () async {
             await ref.read(favoritesMoviesProvider.notifier).toggleFavorite(movie);
-            
-            // ref.read(localStorageRepositoryProvider)
-            // .toggleFavorite(movie);
             ref.invalidate(isFavoriteProvider(movie.id));       
             
           }
@@ -253,47 +326,49 @@ class _CustomSliverAppBar extends ConsumerWidget {
       // flexibleSpace: FlexibleSpaceBar(
       //   titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       //   title: Text(movie.title, style: const TextStyle(fontSize: 20), textAlign: TextAlign.start,),
-        flexibleSpace: Stack(
-          children: [
-            Positioned.fill(child: Image.network(
-            movie.posterPath,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
-              return FadeIn(child: child);
-            },
-            ),
-            ),
-
-            const _CustomGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.black87,
-                Colors.transparent,],
-              stops: [0.0, 0.2],),
-            
-             const _CustomGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.black87,
-                Colors.transparent,],
-              stops: [0.0, 0.3],),
-
+        flexibleSpace: FlexibleSpaceBar(
+          background: Stack(
+            children: [
+              Positioned.fill(child: Image.network(
+              movie.posterPath,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress != null) return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
+                return FadeIn(child: child);
+              },
+              ),
+              ),
+          
               const _CustomGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black87,
-                ],
-              stops: [0.7, 1],),
-
-            
-
-            //
-          ],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.black87,
+                  Colors.transparent,],
+                stops: [0.0, 0.2],),
+              
+               const _CustomGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.black87,
+                  Colors.transparent,],
+                stops: [0.0, 0.3],),
+          
+                const _CustomGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black87,
+                  ],
+                stops: [0.7, 1],),
+          
+              
+          
+              //
+            ],
+          ),
         ),
         
       );
@@ -301,21 +376,6 @@ class _CustomSliverAppBar extends ConsumerWidget {
   }
 }
 
-
-
-class _LeaveAReview extends StatelessWidget {
-  final Movie movie;
-
-
-  const _LeaveAReview({required this.movie});
-
-  @override
-  Widget build(BuildContext context) {
-  final String idMovie = movie.id.toString();
-
-    return  Text(idMovie);
-  }
-}
 
 
 class _CustomGradient extends StatelessWidget  {

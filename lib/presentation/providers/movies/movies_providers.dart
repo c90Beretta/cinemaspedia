@@ -33,7 +33,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
   }
   );
 
+  final getRecomendationsMoviesProvider = StateNotifierProvider<MoviesByRecomendations,Map<String,List<Movie>>>((ref)  { 
+  final movierepositoryprovider = ref.watch(movieRepositoryProvider);
+  return MoviesByRecomendations(getRecomendations: movierepositoryprovider.getRecomendations);
+   
+  }
+  );
 
+
+typedef GetRecomendationsCallBack = Future<List<Movie>> Function (String movieid);
+
+class MoviesByRecomendations extends StateNotifier <Map<String, List<Movie>>>{
+  final GetRecomendationsCallBack getRecomendations;
+  MoviesByRecomendations( {required this.getRecomendations,}):super({});
+
+  Future<void> loadMovies(String movieid) async{
+    if( state[movieid] !=  null) return;
+    final List<Movie> movies = await getRecomendations(movieid); 
+    state = {...state, movieid: movies};
+  }
+
+}
 
 
 typedef MovieCallBack = Future <List<Movie>> Function({int page});
